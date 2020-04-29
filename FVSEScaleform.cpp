@@ -229,6 +229,14 @@ namespace FVScaleform
 		CurrentPreyAVForm.append(BASE_VORE_CURRENTPREYAV);
 		auto _CurrentPreyAVForm = DYNAMIC_CAST(FVUtilities::GetFormFromIdentifier(CurrentPreyAVForm), TESForm, ActorValueInfo);
 
+		std::string CurrWeightPointGlobalForm = MOD_FILE_EXTENSION;
+		CurrWeightPointGlobalForm.append(BASE_VORE_CURRENT_WEIGHT);
+		auto _CurrWeightPointGlobalForm = DYNAMIC_CAST(FVUtilities::GetFormFromIdentifier(CurrWeightPointGlobalForm), TESForm, TESGlobal);
+
+		std::string MaxWeightPointGlobalForm = MOD_FILE_EXTENSION;
+		MaxWeightPointGlobalForm.append(BASE_VORE_MAX_WEIGHT);
+		auto _MaxWeightPointGlobalForm = DYNAMIC_CAST(FVUtilities::GetFormFromIdentifier(MaxWeightPointGlobalForm), TESForm, TESGlobal);
+
 		//grab player specific information
 		int _PreyLevel = (int)GetValueAV(_PreyLevelAVForm, pPlayerCharacter);
 		int _PredLevel = (int)GetValueAV(_PredLevelAVForm, pPlayerCharacter);
@@ -239,6 +247,10 @@ namespace FVScaleform
 		double playerCapacityPoints = (double)_CapacityPointGlobalForm->value;
 		double reqCap = ceil(pow((_CapacityBase - playerWhaleRank), 2.25));
 		
+		if (_VoreXP > reqXP) {
+			_MESSAGE("Vore XP greater than required XP  Setting current equal to required to prevent UI error - current: %f requried: %f", _VoreXP, reqXP);
+			_VoreXP = reqXP;
+		}
 		GFxValue statData;
 		statData.SetInt((int)GetAVBaseValueByFormID(kSpecialType_Strength, actor));
 		dst->PushBack(&statData);
@@ -277,6 +289,10 @@ namespace FVScaleform
 		statData.SetNumber((int)GetValueAV(_CurrentPreyAVForm, actor));
 		dst->PushBack(&statData);
 		statData.SetString(fullName);
+		dst->PushBack(&statData);
+		statData.SetNumber((int)_MaxWeightPointGlobalForm->value);
+		dst->PushBack(&statData);
+		statData.SetNumber((int)_CurrWeightPointGlobalForm->value);
 		dst->PushBack(&statData);
 	}
 
@@ -551,8 +567,7 @@ namespace FVScaleform
 				}
 			}
 			else if ((*g_ui)->IsMenuOpen("PipboyMenu")) {
-				//_MESSAGE("PipboyMenu keymask %X", keyCode);
-
+				_MESSAGE("PipboyMenu eventType: %d keyCode: %X deviceType: %X ControlID: %s", eventType, keyCode, deviceType, ControlID->c_str());
 				if (isDown) {
 					keyDown = true;
 				}

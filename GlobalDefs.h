@@ -25,6 +25,8 @@
 #define BASE_VORE_INACTIVECOMPANIONLIST "|6B09"
 #define BASE_VORE_DIGEST_SPEED_GLOBAL "|F9A3"
 #define BASE_VORE_DIGEST_SPEED_AV "|AA12"
+#define BASE_VORE_CURRENT_WEIGHT "|D30D"
+#define BASE_VORE_MAX_WEIGHT "|AA14"
 
 enum Functions {				//these are copied from GameFormComponents in the condition class.  Only required values have been enumerated
 	kFunction_GetValue = 14,

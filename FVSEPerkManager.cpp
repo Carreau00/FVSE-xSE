@@ -193,7 +193,7 @@ namespace FVSEPerkManager {
 		InfoResult.filterFlag |= ((InfoResult.isEligible ? 1 : 2) << 4);
 		InfoResult.rank = rank;
 		InfoResult.numRanks = numRanks;
-
+		//_MESSAGE("Perk: %s IsEligible: %d filterFlag: %d", InfoResult.Perk->fullName.name.c_str(), InfoResult.isEligible, InfoResult.filterFlag);
 		return InfoResult;
 	}
 
